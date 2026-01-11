@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+polars
+requests
+boto3
+tqdm

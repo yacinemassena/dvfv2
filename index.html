@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://unpkg.com/prunecluster@2.1.0/dist/LeafletStyleSheet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_01320fec45bb1e5f89f581491177f6ba {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+</head>
+<body>
+    
+    
+    <style>
+    /* Popup Container */
+    .leaflet-popup-content-wrapper {
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 8px;
+        padding: 0;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .leaflet-popup-content {
+        margin: 15px !important;
+        width: 280px !important;
+    }
+    .leaflet-popup-tip {
+        background: rgba(255, 255, 255, 0.98);
+        border: 1px solid #ddd;
+    }
+    
+    /* Content Styles */
+    .popup-header {
+        font-size: 14px;
+        font-weight: bold;
+        color: #555;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .popup-row {
+        margin-bottom: 5px;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+    .popup-label {
+        color: #666;
+        margin-right: 5px;
+    }
+    .popup-value {
+        color: #000;
+        font-weight: 500;
+    }
+    .popup-value.margin {
+        color: #00a86b;
+        font-weight: bold;
+    }
+    .popup-value.type {
+        color: #0088cc;
+    }
+    .popup-address {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+        font-size: 11px;
+        color: #777;
+        font-style: italic;
+    }
+
+    /* Custom Tooltip Styling */
+    .custom-tooltip {
+        background: rgba(255, 255, 255, 0.98) !important;
+        border: 1px solid #ddd !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+        padding: 0 !important;
+    }
+
+    .custom-tooltip .popup-header,
+    .custom-tooltip .popup-row,
+    .custom-tooltip .popup-address {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    .custom-tooltip .popup-header {
+        padding-top: 12px;
+    }
+    .custom-tooltip .popup-address {
+        padding-bottom: 12px;
+        margin-bottom: 0;
+    }
+    .leaflet-tooltip-top.custom-tooltip::before {
+        border-top-color: rgba(255, 255, 255, 0.98);
+    }
+
+    /* Custom Cluster Styling - Override PruneCluster defaults */
+    .prunecluster {
+        background: rgba(110, 204, 57, 0.6);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .prunecluster div {
+        background: rgba(110, 204, 57, 0.9);
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .prunecluster span {
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .prunecluster-small {
+        width: 40px;
+        height: 40px;
+        background: rgba(110, 204, 57, 0.6);
+    }
+
+    .prunecluster-small div {
+        width: 30px;
+        height: 30px;
+        background: rgba(110, 204, 57, 0.9);
+    }
+
+    .prunecluster-medium {
+        width: 50px;
+        height: 50px;
+        background: rgba(240, 194, 12, 0.6);
+    }
+
+    .prunecluster-medium div {
+        width: 36px;
+        height: 36px;
+        background: rgba(240, 194, 12, 0.9);
+    }
+
+    .prunecluster-large {
+        width: 60px;
+        height: 60px;
+        background: rgba(241, 128, 23, 0.6);
+    }
+
+    .prunecluster-large div {
+        width: 44px;
+        height: 44px;
+        background: rgba(241, 128, 23, 0.9);
+    }
+    </style>
+    
+    
+    <script>
+        console.log("Script injected. Waiting for window load...");
+        window.addEventListener("load", function() {
+            
+            // Wait for Leaflet to be ready
+            if (typeof L === 'undefined') {
+                console.error("Leaflet (L) is undefined even after window load!");
+                return;
+            }
+            
+            startApp();
+            
+            function startApp() {
+                var mapId = "map_01320fec45bb1e5f89f581491177f6ba";
+                
+                console.log("Looking for map: " + mapId);
+
+                // Define CDN URL (Bundled)
+                // Use local path if on localhost, otherwise use R2 CDN
+                const isLocal = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+                // const TILE_CDN = isLocal ? "bundled_tiles" : "https://pub-ecf2cacf42304db4aff89b230d889189.r2.dev/bundled_tiles";
+                const TILE_CDN = "https://pub-ecf2cacf42304db4aff89b230d889189.r2.dev/bundled_tiles";
+                
+                console.log(`Environment: ${isLocal ? 'Local' : 'Production'}, using tiles from: ${TILE_CDN}`);
+                
+                // Cache zoom level data in memory
+                const zoomCache = {};
+
+                async function loadZoomData(zoom) {
+                    if (zoomCache[zoom]) return zoomCache[zoom];
+                    
+                    try {
+                        const resp = await fetch(`${TILE_CDN}/z${zoom}.json`);
+                        if (!resp.ok) return {};
+                        
+                        const data = await resp.json();
+                        zoomCache[zoom] = data;
+                        return data;
+                    } catch (e) {
+                        console.error("Error fetching zoom bundle:", e);
+                        return {};
+                    }
+                }
+
+                // Helper: get tile coords for bounds
+                function getTilesForBounds(bounds, zoom) {
+                    const n = Math.pow(2, zoom);
+                    
+                    function latLonToTile(lat, lon) {
+                        const x = Math.floor((lon + 180) / 360 * n);
+                        const latRad = lat * Math.PI / 180;
+                        const y = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
+                        return [x, y];
+                    }
+                    
+                    const [minX, maxY] = latLonToTile(bounds.getSouth(), bounds.getWest());
+                    const [maxX, minY] = latLonToTile(bounds.getNorth(), bounds.getEast());
+                    
+                    const tiles = [];
+                    for (let x = minX; x <= maxX; x++) {
+                        for (let y = minY; y <= maxY; y++) {
+                            tiles.push(`${x},${y}`);
+                        }
+                    }
+                    return tiles;
+                }
+
+                function initMapLogic(mapInstance) {
+                    console.log("Initializing map logic on:", mapInstance);
+                    
+                    // Layer group to hold our markers
+                    var markerLayer = L.layerGroup().addTo(mapInstance);
+                    
+                    var typeMap = {'M': 'Maison', 'A': 'Appartement', 'L': 'Local', 'X': 'Autre'};
+
+                    function createTooltipContent(props) {
+                        var typeCode = props.type_local ? props.type_local.charAt(0) : 'X';
+                        var typeStr = typeMap[typeCode] || 'Autre';
+                        var marginVal = props.margin || 0;
+                        var marginStr = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(marginVal);
+                        var address = props.address || '';
+                        
+                        return '<div class="popup-header">Détail du flip</div>' +
+                            '<div class="popup-row"><span class="popup-label">Type:</span><span class="popup-value type">' + typeStr + '</span></div>' +
+                            '<div class="popup-row"><span class="popup-label">Marge:</span><span class="popup-value margin">' + marginStr + '</span></div>' +
+                            '<div class="popup-address">' + address + '</div>';
+                    }
+
+                    function renderItem(item) {
+                        if (item.latitude === undefined || item.longitude === undefined) return;
+
+                        // Check if it's a cluster
+                        if (item.count !== undefined && item.count > 1) {
+                            // Render as cluster
+                            var sizeClass = 'prunecluster-small';
+                            if (item.count >= 100) sizeClass = 'prunecluster-large';
+                            else if (item.count >= 10) sizeClass = 'prunecluster-medium';
+                            
+                            var icon = L.divIcon({
+                                html: "<div><span>" + item.count + "</span></div>",
+                                className: "prunecluster " + sizeClass,
+                                iconSize: [44, 44] 
+                            });
+                            
+                            var marker = L.marker([item.latitude, item.longitude], { icon: icon });
+                            
+                            // Zoom on click for clusters
+                            marker.on('click', function() {
+                                mapInstance.setView([item.latitude, item.longitude], mapInstance.getZoom() + 2);
+                            });
+                            
+                            markerLayer.addLayer(marker);
+                        } else {
+                            // Render as single property
+                            var marker = L.circleMarker([item.latitude, item.longitude], {
+                                radius: 8,
+                                fillColor: "#ff0000",
+                                color: "#ffffff",
+                                weight: 1,
+                                opacity: 1,
+                                fillOpacity: 0.9
+                            });
+                            
+                            var tooltipContent = createTooltipContent(item);
+                            
+                            marker.bindTooltip(tooltipContent, {
+                                sticky: false, 
+                                direction: 'top',
+                                className: 'custom-tooltip',
+                                opacity: 1
+                            });
+                            
+                            markerLayer.addLayer(marker);
+                        }
+                    }
+
+                    let loadTimeout = null;
+
+                    function loadMarkers() {
+                        if (loadTimeout) clearTimeout(loadTimeout);
+                        loadTimeout = setTimeout(_loadMarkers, 100);
+                    }
+
+                    async function _loadMarkers() {
+                        if (!mapInstance) return;
+                        
+                        const bounds = mapInstance.getBounds();
+                        const zoom = Math.min(Math.max(Math.floor(mapInstance.getZoom()), 6), 14);
+                        
+                        // Single fetch for entire zoom level
+                        const data = await loadZoomData(zoom);
+                        
+                        // Get tiles in view
+                        const tileKeys = getTilesForBounds(bounds, zoom);
+                        
+                        // Collect markers from matching tiles
+                        const markers = [];
+                        for (const key of tileKeys) {
+                            if (data[key]) {
+                                markers.push(...data[key]);
+                            }
+                        }
+                        
+                        // console.log(`Rendering ${markers.length} markers from ${tileKeys.length} tiles`);
+                        
+                        markerLayer.clearLayers();
+                        
+                        // Chunked rendering to avoid freezing UI
+                        const allItems = markers;
+                        let index = 0;
+                        
+                        function renderChunk() {
+                            const start = performance.now();
+                            // Render for max 8ms per frame to maintain 60fps
+                            while (index < allItems.length && performance.now() - start < 8) {
+                                renderItem(allItems[index]);
+                                index++;
+                            }
+                            
+                            if (index < allItems.length) {
+                                requestAnimationFrame(renderChunk);
+                            }
+                        }
+                        
+                        requestAnimationFrame(renderChunk);
+                    }
+
+                    mapInstance.on('moveend', loadMarkers);
+                    
+                    // Initial load
+                    loadMarkers();
+                }
+
+                // Poll for map instance
+                var attempts = 0;
+                var interval = setInterval(function() {
+                    attempts++;
+                    var mapInstance = window[mapId];
+                    
+                    // Fallback: Find any Leaflet map on page
+                    if (!mapInstance) {
+                        for (var k in window) {
+                            if (k.startsWith('map_') && window[k] && window[k].addLayer) {
+                                mapInstance = window[k];
+                                console.log("Found map via fallback key:", k);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (mapInstance) {
+                        clearInterval(interval);
+                        initMapLogic(mapInstance);
+                    } else if (attempts > 50) { // 10 seconds
+                        console.error("Could not find Leaflet map instance.");
+                        clearInterval(interval);
+                    }
+                }, 200);
+            }
+
+        });
+    </script>
+    
+    
+            <div class="folium-map" id="map_01320fec45bb1e5f89f581491177f6ba" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_01320fec45bb1e5f89f581491177f6ba = L.map(
+                "map_01320fec45bb1e5f89f581491177f6ba",
+                {
+                    center: [46.603354, 1.888334],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 6,
+  "zoomControl": true,
+  "preferCanvas": true,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_8a54bb85a30f94c70a9c5fbb2943fd3b = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_8a54bb85a30f94c70a9c5fbb2943fd3b.addTo(map_01320fec45bb1e5f89f581491177f6ba);
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_01320fec45bb1e5f89f581491177f6ba);
+        
+</script>
+</html>
